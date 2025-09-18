@@ -7,12 +7,6 @@ export const designationService = {
     return response.data;
   },
 
-  // Get designation by ID
-  getDesignation: async (id) => {
-    const response = await api.get(`/designations/${id}`);
-    return response.data;
-  },
-
   // Create designation
   createDesignation: async (designationData) => {
     const response = await api.post('/designations', designationData);

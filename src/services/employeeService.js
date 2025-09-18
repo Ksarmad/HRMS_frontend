@@ -29,5 +29,9 @@ export const employeeService = {
   deleteEmployee: async (id) => {
     const response = await api.delete(`/employees/${id}`);
     return response.data;
-  }
+  },
+  getManagers: async () => {
+  const response = await api.get('/employees', { params: { role: 'manager', limit: 100 } });
+  return response.data;
+}
 };

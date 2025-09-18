@@ -3,7 +3,10 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useSelector } from 'react-redux';
 import Login from './pages/Auth/Login';
 import Dashboard from './pages/Dashboard/Dashboard';
+import EmployeeList from './pages/Employees/EmployeeList';
 import Header from './components/Layout/Header';
+import Sidebar from './components/Layout/Sidebar';
+import AppToastContainer from './components/Common/ToastContainer';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useSelector((state) => state.auth);
@@ -33,29 +36,46 @@ const PublicRoute = ({ children }) => {
   return !isAuthenticated ? children : <Navigate to="/dashboard" />;
 };
 
-function App() {
+function AppContent() {
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
   return (
     <Router>
-      <Routes>
-        <Route path="/login" element={
-          <PublicRoute>
-            <Login />
-          </PublicRoute>
-        } />
-        
-        <Route path="/dashboard" element={
-          <ProtectedRoute>
-            <div className="min-h-screen bg-gray-50">
-              <Header />
+      {isAuthenticated && <Header />}
+      {isAuthenticated && <Sidebar />}
+      
+      <div className={isAuthenticated ? 'ml-64 pt-16 min-h-screen bg-gray-50' : ''}>
+        <Routes>
+          <Route path="/login" element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          } />
+          
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
               <Dashboard />
-            </div>
-          </ProtectedRoute>
-        } />
-        
-        <Route path="/" element={<Navigate to="/dashboard" />} />
-      </Routes>
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/employees" element={
+            <ProtectedRoute>
+              <EmployeeList />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/" element={<Navigate to="/dashboard" />} />
+        </Routes>
+      </div>
     </Router>
   );
+}
+
+function App() {
+ return <>
+  <AppContent />
+  <AppToastContainer />
+</>
 }
 
 export default App;

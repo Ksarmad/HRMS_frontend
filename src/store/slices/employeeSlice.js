@@ -26,6 +26,30 @@ export const createEmployee = createAsyncThunk(
   }
 );
 
+export const updateEmployee = createAsyncThunk(
+  'employees/updateEmployee',
+  async ({ id, employeeData }, { rejectWithValue }) => {
+    try {
+      const response = await employeeService.updateEmployee(id, employeeData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to update employee');
+    }
+  }
+);
+
+export const deleteEmployee = createAsyncThunk(
+  'employees/deleteEmployee',
+  async (id, { rejectWithValue }) => {
+    try {
+      await employeeService.deleteEmployee(id);
+      return id;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to delete employee');
+    }
+  }
+);
+
 const employeeSlice = createSlice({
   name: 'employees',
   initialState: {
@@ -66,17 +90,24 @@ const employeeSlice = createSlice({
       })
       
       // Create employee
-      .addCase(createEmployee.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(createEmployee.fulfilled, (state, action) => {
-        state.loading = false;
         state.list.unshift(action.payload.employee);
       })
-      .addCase(createEmployee.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+      
+      // Update employee
+      .addCase(updateEmployee.fulfilled, (state, action) => {
+        const index = state.list.findIndex(emp => emp.id === action.payload.employee.id);
+        if (index !== -1) {
+          state.list[index] = action.payload.employee;
+        }
+        if (state.current?.id === action.payload.employee.id) {
+          state.current = action.payload.employee;
+        }
+      })
+      
+      // Delete employee
+      .addCase(deleteEmployee.fulfilled, (state, action) => {
+        state.list = state.list.filter(emp => emp.id !== action.payload);
       });
   }
 });
