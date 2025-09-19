@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Login from './pages/Auth/Login';
 import Dashboard from './pages/Dashboard/Dashboard';
 import EmployeeList from './pages/Employees/EmployeeList';
+// Add other pages as needed
+// import Attendance from './pages/Attendance/Attendance';
+// import Leave from './pages/Leave/Leave';
+// import Payroll from './pages/Payroll/Payroll';
 import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
 import AppToastContainer from './components/Common/ToastContainer';
+import { ROLES, hasRole, isSuperAdmin } from './utils/roles';
 
-const ProtectedRoute = ({ children }) => {
-  /*
-  // Original auth-guarded route:
-  const { isAuthenticated, loading } = useSelector((state) => state.auth);
+const ProtectedRoute = ({ children, allowedRoles = [] }) => {
+  const { isAuthenticated, loading, user } = useSelector((state) => state.auth);
+
+  console.log(user);
+  
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -19,13 +26,31 @@ const ProtectedRoute = ({ children }) => {
       </div>
     );
   }
-  return isAuthenticated ? children : <Navigate to="/login" />;
-  */
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+
+  // If no roles specified, allow access (for backward compatibility)
+  if (allowedRoles.length === 0) {
+    return children;
+  }
+
+  // Super admin can access everything
+  if (isSuperAdmin(user?.role_id)) {
+    return children;
+  }
+
+  // Check if user has required role
+  if (!hasRole(user?.role_id, allowedRoles)) {
+    return <Navigate to="/dashboard" />; // Redirect to dashboard if no access
+  }
+
   return children;
 };
 
 const PublicRoute = ({ children }) => {
-  /*
+  
   // Original public route redirect when authenticated:
   const { isAuthenticated, loading } = useSelector((state) => state.auth);
   if (loading) {
@@ -36,8 +61,8 @@ const PublicRoute = ({ children }) => {
     );
   }
   return !isAuthenticated ? children : <Navigate to="/dashboard" />;
-  */
-  return children;
+  
+  // return children;
 };
 
 function AppContent() {
@@ -46,16 +71,15 @@ function AppContent() {
 
   return (
     <Router>
-      {/* Temporarily always render Header (was gated by auth)
-      {isAuthenticated && <Header collapsed={isSidebarCollapsed} onToggleSidebar={() => setIsSidebarCollapsed(v => !v)} />}
-      */}
-      <Header collapsed={isSidebarCollapsed} onToggleSidebar={() => setIsSidebarCollapsed(v => !v)} />
-      {/* Temporarily always render Sidebar (was gated by auth)
-      {isAuthenticated && <Sidebar collapsed={isSidebarCollapsed} />}
-      */}
-      <Sidebar collapsed={isSidebarCollapsed} />
+      {/* Render Header and Sidebar only if authenticated */}
+      {isAuthenticated && (
+        <>
+          <Header collapsed={isSidebarCollapsed} onToggleSidebar={() => setIsSidebarCollapsed(v => !v)} />
+          <Sidebar collapsed={isSidebarCollapsed} />
+        </>
+      )}
       
-      {/* Was conditional on auth; keep layout consistent across refresh */}
+      {/* Main content area */}
       <div className={isSidebarCollapsed ? 'page-shell-collapsed' : 'page-shell'}>
         <Routes>
           <Route path="/login" element={
@@ -65,13 +89,13 @@ function AppContent() {
           } />
           
           <Route path="/dashboard" element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={[ROLES.SUPER_ADMIN, ROLES.HR, ROLES.MANAGER, ROLES.EMPLOYEE, ROLES.FINANCE, ROLES.RECRUITER]}>
               <Dashboard />
             </ProtectedRoute>
           } />
           
           <Route path="/employees" element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={[ROLES.SUPER_ADMIN, ROLES.HR, ROLES.MANAGER]}>
               <EmployeeList />
             </ProtectedRoute>
           } />

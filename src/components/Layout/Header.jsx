@@ -2,6 +2,7 @@ import React from 'react';
 import { LogOut, User, Menu } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { logout } from '../../store/slices/authSlice';
+import { getRoleName } from '../../utils/roles';
 
 const Header = ({ collapsed = false, onToggleSidebar }) => {
   const dispatch = useAppDispatch();
@@ -25,7 +26,7 @@ const Header = ({ collapsed = false, onToggleSidebar }) => {
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2 text-sm text-gray-600">
               <User className="h-5 w-5" />
-              <span>{user?.email}</span>
+              <span>{user?.email} ({getRoleName(user?.role_id)})</span>
             </div>
 
             <button
