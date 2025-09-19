@@ -9,8 +9,9 @@ import Sidebar from './components/Layout/Sidebar';
 import AppToastContainer from './components/Common/ToastContainer';
 
 const ProtectedRoute = ({ children }) => {
+  /*
+  // Original auth-guarded route:
   const { isAuthenticated, loading } = useSelector((state) => state.auth);
-  
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -18,13 +19,15 @@ const ProtectedRoute = ({ children }) => {
       </div>
     );
   }
-  
   return isAuthenticated ? children : <Navigate to="/login" />;
+  */
+  return children;
 };
 
 const PublicRoute = ({ children }) => {
+  /*
+  // Original public route redirect when authenticated:
   const { isAuthenticated, loading } = useSelector((state) => state.auth);
-  
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -32,8 +35,9 @@ const PublicRoute = ({ children }) => {
       </div>
     );
   }
-  
   return !isAuthenticated ? children : <Navigate to="/dashboard" />;
+  */
+  return children;
 };
 
 function AppContent() {
@@ -42,10 +46,17 @@ function AppContent() {
 
   return (
     <Router>
+      {/* Temporarily always render Header (was gated by auth)
       {isAuthenticated && <Header collapsed={isSidebarCollapsed} onToggleSidebar={() => setIsSidebarCollapsed(v => !v)} />}
+      */}
+      <Header collapsed={isSidebarCollapsed} onToggleSidebar={() => setIsSidebarCollapsed(v => !v)} />
+      {/* Temporarily always render Sidebar (was gated by auth)
       {isAuthenticated && <Sidebar collapsed={isSidebarCollapsed} />}
+      */}
+      <Sidebar collapsed={isSidebarCollapsed} />
       
-      <div className={isAuthenticated ? (isSidebarCollapsed ? 'page-shell-collapsed' : 'page-shell') : ''}>
+      {/* Was conditional on auth; keep layout consistent across refresh */}
+      <div className={isSidebarCollapsed ? 'page-shell-collapsed' : 'page-shell'}>
         <Routes>
           <Route path="/login" element={
             <PublicRoute>

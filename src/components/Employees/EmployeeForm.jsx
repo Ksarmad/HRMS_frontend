@@ -195,23 +195,24 @@ const EmployeeForm = ({ employee = null, onClose, onSuccess }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm overflow-y-auto z-50">
-      <div className="relative top-20 mx-auto w-full max-w-4xl card">
+    <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 sm:p-6" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose?.(); }}>
+      <div className="mx-auto w-full max-w-4xl card p-0 max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">
+        <div className="flex justify-between items-center p-4 sm:p-6 border-b shrink-0">
+          <h2 className="text-2xl font-bold text-slate-900">
             {employee ? 'Edit Employee' : 'Add New Employee'}
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            aria-label="Close"
+            className="btn btn-ghost p-2"
           >
-            <X className="h-6 w-6" />
+            <X className="h-5 w-5" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <form onSubmit={handleSubmit} className="flex-1 flex flex-col overflow-hidden">
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6"><div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Photo Upload */}
             <div className="lg:col-span-1">
               <label className="form-label">Photo</label>
@@ -441,8 +442,10 @@ const EmployeeForm = ({ employee = null, onClose, onSuccess }) => {
             </div>
           </div>
 
+        </div>
+
           {/* Form Actions */}
-          <div className="flex justify-end space-x-4 pt-6 border-t">
+          <div className="bg-white border-t p-4 sm:p-6 flex justify-end gap-4 shrink-0">
             <button
               type="button"
               onClick={onClose}
