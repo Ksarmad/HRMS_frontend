@@ -195,8 +195,8 @@ const EmployeeForm = ({ employee = null, onClose, onSuccess }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-      <div className="relative top-20 mx-auto p-6 border w-full max-w-4xl shadow-lg rounded-md bg-white">
+    <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm overflow-y-auto z-50">
+      <div className="relative top-20 mx-auto w-full max-w-4xl card">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-900">
@@ -214,7 +214,7 @@ const EmployeeForm = ({ employee = null, onClose, onSuccess }) => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Photo Upload */}
             <div className="lg:col-span-1">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Photo</label>
+              <label className="form-label">Photo</label>
               <div className="flex flex-col items-center">
                 <div className="relative mb-4">
                   {photoPreview ? (
@@ -233,13 +233,13 @@ const EmployeeForm = ({ employee = null, onClose, onSuccess }) => {
                       </button>
                     </div>
                   ) : (
-                    <div className="h-32 w-32 rounded-full bg-gray-200 flex items-center justify-center border-2 border-dashed border-gray-300">
+                    <div className="h-32 w-32 rounded-full bg-slate-100 flex items-center justify-center ring-1 ring-slate-300">
                       <User className="h-12 w-12 text-gray-400" />
                     </div>
                   )}
                 </div>
 
-                <label className="cursor-pointer bg-white border border-gray-300 rounded-md px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center">
+                <label className="cursor-pointer btn btn-secondary flex items-center">
                   <Upload className="h-4 w-4 mr-2" />
                   Upload Photo
                   <input
@@ -250,14 +250,14 @@ const EmployeeForm = ({ employee = null, onClose, onSuccess }) => {
                   />
                 </label>
                 {uploading && (
-                  <p className="text-sm text-gray-500 mt-2">Processing image...</p>
+                  <p className="text-sm text-slate-500 mt-2">Processing image...</p>
                 )}
               </div>
             </div>
 
             {/* Personal Information */}
             <div className="lg:col-span-2 space-y-4">
-              <h3 className="text-lg font-medium text-gray-900 flex items-center">
+              <h3 className="text-lg font-medium text-slate-900 flex items-center">
                 <User className="h-5 w-5 mr-2" />
                 Personal Information
               </h3>
@@ -272,7 +272,7 @@ const EmployeeForm = ({ employee = null, onClose, onSuccess }) => {
                     name="first_name"
                     value={formData.first_name}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
                       errors.first_name ? 'border-red-500' : 'border-gray-300'
                     }`}
                   />
@@ -290,7 +290,7 @@ const EmployeeForm = ({ employee = null, onClose, onSuccess }) => {
                     name="last_name"
                     value={formData.last_name}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
                       errors.last_name ? 'border-red-500' : 'border-gray-300'
                     }`}
                   />
@@ -308,7 +308,7 @@ const EmployeeForm = ({ employee = null, onClose, onSuccess }) => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
                       errors.email ? 'border-red-500' : 'border-gray-300'
                     }`}
                   />
@@ -326,7 +326,7 @@ const EmployeeForm = ({ employee = null, onClose, onSuccess }) => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="input"
                   />
                 </div>
               </div>
@@ -349,7 +349,7 @@ const EmployeeForm = ({ employee = null, onClose, onSuccess }) => {
                   name="department_id"
                   value={formData.department_id}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
                     errors.department_id ? 'border-red-500' : 'border-gray-300'
                   }`}
                 >
@@ -371,7 +371,7 @@ const EmployeeForm = ({ employee = null, onClose, onSuccess }) => {
                   name="designation_id"
                   value={formData.designation_id}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
                     errors.designation_id ? 'border-red-500' : 'border-gray-300'
                   }`}
                 >
@@ -393,7 +393,7 @@ const EmployeeForm = ({ employee = null, onClose, onSuccess }) => {
                   name="manager_id"
                   value={formData.manager_id}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="input"
                 >
                   <option value="">Select Manager</option>
                   {managers.map(manager => (
@@ -413,7 +413,7 @@ const EmployeeForm = ({ employee = null, onClose, onSuccess }) => {
                   name="join_date"
                   value={formData.join_date}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
                     errors.join_date ? 'border-red-500' : 'border-gray-300'
                   }`}
                 />
@@ -430,7 +430,7 @@ const EmployeeForm = ({ employee = null, onClose, onSuccess }) => {
                   name="status"
                   value={formData.status}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="input"
                 >
                   <option value="ACTIVE">Active</option>
                   <option value="ON_LEAVE">On Leave</option>
@@ -446,14 +446,14 @@ const EmployeeForm = ({ employee = null, onClose, onSuccess }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="btn btn-ghost"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading || uploading}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn btn-primary"
             >
               {loading ? 'Saving...' : employee ? 'Update Employee' : 'Create Employee'}
             </button>

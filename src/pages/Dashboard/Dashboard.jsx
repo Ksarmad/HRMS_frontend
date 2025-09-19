@@ -43,7 +43,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <div className="container-page">
       {/* Welcome Section */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">
@@ -59,7 +59,7 @@ const Dashboard = () => {
         {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <div key={index} className="bg-white rounded-lg shadow-sm p-6">
+            <div key={index} className="card">
               <div className="flex items-center">
                 <div className={`p-3 rounded-full ${stat.color} bg-opacity-10`}>
                   <Icon className={`h-6 w-6 ${stat.color.replace('bg-', 'text-')}`} />
@@ -76,7 +76,7 @@ const Dashboard = () => {
 
       {/* Recent Employees */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow-sm p-6">
+        <div className="card">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Employees</h2>
           <div className="space-y-4">
             {employees.slice(0, 5).map((employee) => (
@@ -104,7 +104,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm p-6">
+        <div className="card">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
           <div className="grid grid-cols-2 gap-4">
             <button className="bg-blue-50 text-blue-600 p-4 rounded-lg hover:bg-blue-100 transition-colors">
