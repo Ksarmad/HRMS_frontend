@@ -19,6 +19,7 @@
 /* Component classes */
 @layer components {
   .page-shell { @apply ml-64  min-h-screen bg-slate-50; }
+  .page-shell-collapsed { @apply ml-16 min-h-screen bg-slate-50; }
 
   .header { @apply sticky top-0 z-40 bg-white/80 backdrop-blur border-b ring-1 ring-slate-200; }
   .sidebar { @apply fixed left-0 top-0 h-screen w-64 bg-white/90 backdrop-blur border-r ring-1 ring-slate-200 pt-16; }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Login from './pages/Auth/Login';
@@ -38,13 +38,14 @@ const PublicRoute = ({ children }) => {
 
 function AppContent() {
   const { isAuthenticated } = useSelector((state) => state.auth);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   return (
     <Router>
-      {isAuthenticated && <Header />}
-      {isAuthenticated && <Sidebar />}
+      {isAuthenticated && <Header collapsed={isSidebarCollapsed} onToggleSidebar={() => setIsSidebarCollapsed(v => !v)} />}
+      {isAuthenticated && <Sidebar collapsed={isSidebarCollapsed} />}
       
-      <div className={isAuthenticated ? 'page-shell' : ''}>
+      <div className={isAuthenticated ? (isSidebarCollapsed ? 'page-shell-collapsed' : 'page-shell') : ''}>
         <Routes>
           <Route path="/login" element={
             <PublicRoute>

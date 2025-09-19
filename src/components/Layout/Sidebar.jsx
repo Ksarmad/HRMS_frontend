@@ -5,7 +5,7 @@ import {
   BarChart3, Settings, UserCheck 
 } from 'lucide-react';
 
-const Sidebar = () => {
+const Sidebar = ({ collapsed = false }) => {
   const location = useLocation();
 
   const menuItems = [
@@ -19,9 +19,9 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${collapsed ? 'w-16' : 'w-64'}`}>
       <nav className="mt-8">
-        <ul className="space-y-1 px-4">
+        <ul className={`space-y-1 ${collapsed ? 'px-2' : 'px-4'}`}>
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
@@ -30,10 +30,10 @@ const Sidebar = () => {
               <li key={item.path}>
                 <Link
                   to={item.path}
-                  className={`nav-link ${isActive ? 'is-active' : ''}`}
+                  className={`nav-link ${collapsed ? 'justify-center' : ''} ${isActive ? 'is-active' : ''}`}
                 >
-                  <Icon className="h-5 w-5 mr-3" />
-                  <span className="font-medium">{item.label}</span>
+                  <Icon className={`h-5 w-5 ${collapsed ? '' : 'mr-3'}`} />
+                  {!collapsed && <span className="font-medium">{item.label}</span>}
                 </Link>
               </li>
             );
